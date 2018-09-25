@@ -6,9 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- *   文章管理发布 == > 演进方向，加视频 评论 图片 文章类别（社交方向）
- *   @port 8990
- * @author renxl
+ *   用户模块演进方向
+ *   
+ *   生产环境动态切换redis集群
+ *   
+ *   可以通过缓存预热加载用户信息到缓存
+ *   
+ *   @port 8878
+ *   @author renxl
  *
  */
 @SpringBootApplication

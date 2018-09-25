@@ -1,103 +1,89 @@
 package club.renxl.www.user.ssocenter.httpapi;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import club.renxl.www.response.BaseResponse;
+import club.renxl.www.user.ssocenter.dao.domain.User;
+import club.renxl.www.user.ssocenter.service.IUserLogin;
+import club.renxl.www.user.ssocenter.service.IUserLoginInterceptor;
 
 /**
- * <p>用户操作</p>
+ * <p>
+ * 用户操作
+ * </p>
  * 
  * @author renxl
  * @date 20180910
  * @version 1.0.0
- *
+ *https://www.cnblogs.com/ou-pc/p/7833172.html 手动实现tomcat
  */
+@RestController
+@RequestMapping("login")
 public class UserLoginController {
+	private static final Logger log = LoggerFactory.getLogger(UserLoginController.class);
+	@Autowired
+	private IUserLogin iUserLogin;
+	@Autowired
+	private IUserLoginInterceptor iUserLoginInterceptor;
 	
 	/**
-	  *  <p>登录；</p>
-	  *  
-	  *  此种类型并发不同于库存并发;
-	  * 
+	 * 各子系统登录拦截器调用sso该在线验证接口
+	 * 校验走redis,承载短时间并发校验
+	 * 
+	 * @param user 携带登录way信息，为app还是web;
+	 * @param request 携带token等信息
 	 * @return
 	 */
-	public BaseResponse login() {
-	
-		
-		/*
-		 *  动态切换redis
-		 *  动态加载数据源
-		 * if() {
-			
-		}*/
-		// 校验表单
-			// 失败返回
-		//获取redis用户/失败获取db数据
-		
-			//失败返回
-		// 登录信息存储，存储用户,权限(刷新过期时间为3天);/获取数据库信息存储;(双十一类似场景需要提前预热用户信息到redis集群，后切换redis连接到集群)
-		//存储token-userid（手机15天,网页30分钟）
-			// 异常返回
-		
-		// 
-		
-		
-		
-		// 登录次数限制，交给nginx limit模块
-		// 
-		
-		return null;
-		
+	@RequestMapping("/online")
+	public BaseResponse isOnline(@RequestBody User user) {
+		// 从cookie中获取token;可能会存在跨域问题，进行一波测试
+		String token =user.getToken();
+		return iUserLoginInterceptor.isOnline(token, user.getLoginWay());
 	}
 	
+
 	/**
-	 * 退出
+	 * 登录，登录首先与redis进行比对;
+	 * 
+	 * 
+	 * @param user
+	 * @param request
+	 * @param response
 	 * @return
 	 */
-	public BaseResponse loginOut() {
-		return null;
-		
+	@RequestMapping("/loginin")
+	public BaseResponse login(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+		// 从cookie中获取token;可能会存在跨域问题，进行一波测试
+		log.debug("login ==> " + user);
+		return iUserLogin.login(user, request, response);
 	}
 	
 	
 
 	/**
-	 * 个人信息修改
+	 * 登录，登录首先与redis进行比对;
+	 * 
+	 * 
+	 * @param user
+	 * @param request
+	 * @param response
 	 * @return
 	 */
-	public BaseResponse modifySelfInfo() {
-		return null;
-		
+	@RequestMapping("/loginout")
+	public BaseResponse loginOut(@RequestBody User user,@RequestBody HttpServletRequest request, @RequestBody HttpServletResponse response) {
+		// 从cookie中获取token;可能会存在跨域问题，进行一波测试
+		// loginway+token
+		return iUserLogin.loginOut(request, response, user);
 	}
 	
 	
-	
-	
-
-
-	/**
-	 * 注册
-	 * @return
-	 */
-	public BaseResponse register() {
-		return null;
-		
-	}
-	
-	
-	/**
-	 * 个人信息补充完善
-	 * @return
-	 */
-	@RequestMapping("additional")
-	public BaseResponse additional() {
-		return null;
-		
-	}
-	
-	
-	
-	
-
 
 }

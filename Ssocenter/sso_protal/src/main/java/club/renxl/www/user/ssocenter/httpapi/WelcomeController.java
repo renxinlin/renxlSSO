@@ -14,16 +14,21 @@ import club.renxl.www.response.BaseResponse;
 import club.renxl.www.user.ssocenter.dao.AreaMapper;
 import club.renxl.www.user.ssocenter.dao.domain.Area;
 import club.renxl.www.user.ssocenter.dao.domain.AreaExample;
+import club.renxl.www.user.ssocenter.redis.dao.RedisDao;
 
 @RestController
 @RequestMapping("welcome")
 public class WelcomeController {
 	@Autowired
 	private  AreaMapper areaMapper;
+	@Autowired
+	private	RedisDao redisDao;
 	
 	@RequestMapping("hi")
-	public BaseResponse hi() {
-		return BaseResponse.success("hi");
+	public BaseResponse hi(String name) {
+		redisDao.set(name, name);
+		// System.out.println(redisDao.get(name));
+		return BaseResponse.success(name);
 	}
 	
 	

@@ -33,14 +33,15 @@
 		
 		
 		<!--  cache -->
-        <dependency>
+    <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+        </dependency> 
         <!--  redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>1.5.14.RELEASE</version>
         </dependency>
         
 			<dependency>

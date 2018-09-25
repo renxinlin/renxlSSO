@@ -4,19 +4,19 @@ public class Area {
     /** ID */
     private String id;
 
-    /** À¸Ä¿Ãû */
+    /** æ ç›®å */
     private String areaname;
 
-    /** ¸¸À¸Ä¿ */
+    /** çˆ¶æ ç›® */
     private String parentid;
 
     /**  */
     private String shortname;
 
-    /** ¾­¶È */
+    /** ç»åº¦ */
     private Double lng;
 
-    /** Î³¶È */
+    /** çº¬åº¦ */
     private Double lat;
 
     /**  */
@@ -25,7 +25,7 @@ public class Area {
     /** 25 */
     private String position;
 
-    /** ÅÅĞò */
+    /** æ’åº */
     private Integer sort;
 
     /**
